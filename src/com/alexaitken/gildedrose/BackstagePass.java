@@ -1,9 +1,6 @@
 package com.alexaitken.gildedrose;
 
 import com.alexaitken.gildedrose.exceptions.EstadoItemInvalidoException;
-import com.alexaitken.gildedrose.exceptions.MaximoSuperadoCalidadException;
-import com.alexaitken.gildedrose.exceptions.ValorNegativoCalidadException;
-import com.alexaitken.gildedrose.exceptions.ValorNegativoDiasVencimientoException;
 
 public class BackstagePass extends StandardItem {
 
@@ -13,9 +10,6 @@ public class BackstagePass extends StandardItem {
 	}
 
 	/**
-	 * @throws MaximoSuperadoCalidadException 
-	 * @throws ValorNegativoCalidadException 
-	 * @throws ValorNegativoDiasVencimientoException 
 	 * @deprecated
 	 */
 	public BackstagePass(Item item) 
@@ -25,7 +19,6 @@ public class BackstagePass extends StandardItem {
 
 	@Override
 	public void updateQuality() {
-		// TODO Auto-generated method stub
 		if (this.getDiasFaltantes()>10)
 			this.incrementarCalidad(1);
 		else if (this.getDiasFaltantes()>5)

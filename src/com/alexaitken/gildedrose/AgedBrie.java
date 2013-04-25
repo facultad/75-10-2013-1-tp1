@@ -1,9 +1,6 @@
 package com.alexaitken.gildedrose;
 
 import com.alexaitken.gildedrose.exceptions.EstadoItemInvalidoException;
-import com.alexaitken.gildedrose.exceptions.MaximoSuperadoCalidadException;
-import com.alexaitken.gildedrose.exceptions.ValorNegativoCalidadException;
-import com.alexaitken.gildedrose.exceptions.ValorNegativoDiasVencimientoException;
 
 public class AgedBrie extends StandardItem {
 
@@ -13,9 +10,6 @@ public class AgedBrie extends StandardItem {
 	}
 
 	/**
-	 * @throws MaximoSuperadoCalidadException 
-	 * @throws ValorNegativoCalidadException 
-	 * @throws ValorNegativoDiasVencimientoException 
 	 * @deprecated
 	 */
 	public AgedBrie(Item item) 

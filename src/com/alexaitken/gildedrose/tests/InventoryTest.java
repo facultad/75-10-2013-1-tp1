@@ -7,10 +7,8 @@ import org.junit.Test;
 import com.alexaitken.gildedrose.Inventory;
 import com.alexaitken.gildedrose.Item;
 import com.alexaitken.gildedrose.exceptions.EstadoItemInvalidoException;
-import com.alexaitken.gildedrose.exceptions.MaximoSuperadoCalidadException;
+import com.alexaitken.gildedrose.exceptions.ModelException;
 import com.alexaitken.gildedrose.exceptions.ValorCalidadInvalidoException;
-import com.alexaitken.gildedrose.exceptions.ValorNegativoCalidadException;
-import com.alexaitken.gildedrose.exceptions.ValorNegativoDiasVencimientoException;
 
 public class InventoryTest {
 
@@ -22,6 +20,10 @@ public class InventoryTest {
 		try {
 			return new Inventory(items);
 		} catch (EstadoItemInvalidoException e) {
+			e.printStackTrace();
+			fail();
+		} catch (ModelException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 			fail();
 		}

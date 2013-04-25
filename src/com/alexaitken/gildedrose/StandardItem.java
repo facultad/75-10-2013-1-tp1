@@ -1,13 +1,17 @@
 package com.alexaitken.gildedrose;
 
 import com.alexaitken.gildedrose.exceptions.EstadoItemInvalidoException;
+import com.alexaitken.gildedrose.exceptions.InventoryNullException;
+import com.alexaitken.gildedrose.exceptions.InventoryYaAsignadoItemException;
 import com.alexaitken.gildedrose.exceptions.MaximoSuperadoCalidadException;
+import com.alexaitken.gildedrose.exceptions.ModelException;
 import com.alexaitken.gildedrose.exceptions.ValorNegativoCalidadException;
 import com.alexaitken.gildedrose.exceptions.ValorNegativoDiasVencimientoException;
 
 public class StandardItem implements IItem {
 
-	private Item item;
+	private Item item=null;
+	private BaseInventory inventory=null;
 
 	public StandardItem(String descripcion,int diasParaVencer,int calidad) 
 			throws EstadoItemInvalidoException{
@@ -15,20 +19,7 @@ public class StandardItem implements IItem {
 		this.testEstado();
 	}
 	
-	protected void testEstado()
-		throws 
-			EstadoItemInvalidoException{
-
-		if (this.getDiasFaltantes()<0)
-			throw new ValorNegativoDiasVencimientoException();
-		if (this.getQuality()<0)
-			throw new ValorNegativoCalidadException();
-		if (this.getQuality()>this.getMaxCalidad())
-			throw new MaximoSuperadoCalidadException();
-	}
-
 	public int getQuality() {
-		// TODO Auto-generated method stub
 		return this.item.getQuality();
 	}
 
@@ -43,15 +34,45 @@ public class StandardItem implements IItem {
 
 	@Override
 	public void updateQuality() {
-		if (this.item.getSellIn()<=0)
-			this.item.setQuality(this.item.getQuality()-2);
+		if (this.getDiasFaltantes()<=0)
+			this.decrementarCalidad(2);
 		else{
-			this.item.setQuality(this.item.getQuality()-1);
-			this.item.setSellIn(this.item.getSellIn()-1);
+			this.decrementarCalidad(1);
+			this.decrementarDiasFaltantes(1);
 		}
 	}
 
-	public void incrementarCalidad(int cantidad) {
+	public int getDiasFaltantes() {
+		return this.item.getSellIn();
+	}
+
+	public int getMaxCalidad(){
+		return 50;
+	}
+
+	protected void testEstado()
+		throws 
+			EstadoItemInvalidoException{
+
+		if (this.getDiasFaltantes()<0)
+			throw new ValorNegativoDiasVencimientoException();
+		if (this.getQuality()<0)
+			throw new ValorNegativoCalidadException();
+		if (this.getQuality()>this.getMaxCalidad())
+			throw new MaximoSuperadoCalidadException();
+	}
+
+	protected void decrementarCalidad(int cantidad) {
+		if (this.item.getQuality()==0)
+			return;
+		
+		if ((this.item.getQuality()-cantidad)<=0)
+			this.item.setQuality(0);
+		else
+			this.item.setQuality(this.item.getQuality()-cantidad);
+	}
+
+	protected void incrementarCalidad(int cantidad) {
 		if (this.item.getQuality()==this.getMaxCalidad())
 			return;
 		this.item.setQuality(this.item.getQuality()+cantidad);
@@ -59,19 +80,31 @@ public class StandardItem implements IItem {
 			this.item.setQuality(this.getMaxCalidad());
 	}
 
-	public void decrementarDiasFaltantes(int cantidad) {
-		this.item.setSellIn(this.item.getSellIn()-cantidad);
-	}
-
-	public int getDiasFaltantes() {
-		return this.item.getSellIn();
-	}
-
-	public void anularCalidad() {
+	protected void anularCalidad() {
 		this.item.setQuality(0);
 	}
 
-	public int getMaxCalidad(){
-		return 50;
+	protected void decrementarDiasFaltantes(int cantidad) {
+		if (this.getDiasFaltantes()==0)
+			return;
+		if ((this.getDiasFaltantes()-cantidad)<=0)
+			this.item.setSellIn(0);
+		else
+			this.item.setSellIn(this.item.getSellIn()-cantidad);
 	}
+
+	@Override
+	public void addToInventary(BaseInventory baseInventory) throws ModelException{
+		if (baseInventory==null)
+			throw new InventoryNullException();
+		baseInventory.testAddItem(this);
+		this.testAddToInventory(baseInventory);
+		baseInventory.doAddItem(this);
+	}
+
+	private void testAddToInventory(BaseInventory baseInventory) throws InventoryYaAsignadoItemException{
+		if (this.inventory!=null)
+			throw new InventoryYaAsignadoItemException();
+	}
+
 }

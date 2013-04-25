@@ -1,64 +1,37 @@
 ﻿package com.alexaitken.gildedrose;
 
-import java.awt.List;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-
 import com.alexaitken.gildedrose.exceptions.EstadoItemInvalidoException;
-import com.alexaitken.gildedrose.exceptions.MaximoSuperadoCalidadException;
-import com.alexaitken.gildedrose.exceptions.ValorNegativoCalidadException;
-import com.alexaitken.gildedrose.exceptions.ValorNegativoDiasVencimientoException;
+import com.alexaitken.gildedrose.exceptions.ModelException;
 
-import sun.text.normalizer.UProperty;
-
-public class Inventory {
-
-	private Collection<IItem> items=new ArrayList<IItem>();
+public class Inventory extends BaseInventory{
 
 	/**
-	 * @throws MaximoSuperadoCalidadException 
-	 * @throws ValorNegativoCalidadException 
-	 * @throws ValorNegativoDiasVencimientoException 
 	 * @deprecated
 	 */
 	public Inventory(Item[] items) 
-			throws EstadoItemInvalidoException {
+			throws EstadoItemInvalidoException, ModelException{
 		super();
 		for(int i=0;i<items.length;i++){
 			IFactoryMethodItem factoryMethod;
 			factoryMethod=new FactoryMethodItem(items[i]);
-			this.add(factoryMethod.crearItem());
+			this.addItem(factoryMethod.crearItem());
 		}
 	}
 	
-	public static Inventory createDefaultInventory() 
-			throws EstadoItemInvalidoException{
-		Inventory inventory=new Inventory();
-		inventory.add(new StandardItem("+5 Dexterity Vest", 10, 20));
-		inventory.add(new AgedBrie("Aged Brie", 2, 0));
-		inventory.add(new StandardItem("Elixir of the Mongoose", 5, 7));
-		inventory.add(new Sulfura("Sulfuras, Hand of Ragnaros"));
-		inventory.add(new BackstagePass("Backstage passes to a TAFKAL80ETC concert", 15, 20));
-		inventory.add(new Conjured("Conjured Mana Cake", 3, 6));
-		return inventory;
-	}
-
 	public Inventory() {
 		super();
 	}
 	
-	public void add(IItem item){
-		this.items.add(item);
+	public static Inventory createDefaultInventory() 
+			throws EstadoItemInvalidoException, ModelException{
+		Inventory inventory=new Inventory();
+		inventory.addItem(new StandardItem("+5 Dexterity Vest", 10, 20));
+		inventory.addItem(new AgedBrie("Aged Brie", 2, 0));
+		inventory.addItem(new StandardItem("Elixir of the Mongoose", 5, 7));
+		inventory.addItem(new Sulfura("Sulfuras, Hand of Ragnaros"));
+		inventory.addItem(new BackstagePass("Backstage passes to a TAFKAL80ETC concert", 15, 20));
+		inventory.addItem(new Conjured("Conjured Mana Cake", 3, 6));
+		return inventory;
 	}
 
-	public void updateQuality(){
-		Iterator<IItem> i=this.items.iterator();
-
-		while (i.hasNext()) {
-			IItem item = (IItem) i.next();
-			item.updateQuality();
-		}
-	}
-	
 }

@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.alexaitken.gildedrose.Item;
 import com.alexaitken.gildedrose.StandardItem;
 import com.alexaitken.gildedrose.exceptions.EstadoItemInvalidoException;
 import com.alexaitken.gildedrose.exceptions.MaximoSuperadoCalidadException;
@@ -65,5 +64,28 @@ public class StandardItemTest {
 		assertEquals("Una vez que paso la fecha de vencimiento (SellIn <= 0) la calidad "+
 			"(“Quality”) disminuye al doble de la velocidad normal, es decir"+
 			"decrementa 2.",0, item.getQuality());
+	}
+
+	@Test
+	public void testUpdateQualityNoNegativo() {
+		/*
+		 * La calidad de un producto, nunca es un número negativo.
+		 */
+		StandardItem item=this.crearStandarItem("Cualquier producto", 0, 0);
+		item.updateQuality();
+		assertTrue("La calidad de un producto, nunca es un número negativo.",
+				item.getQuality()>=0);
+	}
+
+	@Test
+	public void testUpdateQualityMaxCalidad() {
+		/*
+		 * El valor de calidad de un producto, nunca supera 50.
+		 */
+		try {
+			new StandardItem("Cualquier item", 5, 51);
+			fail("El valor de calidad de un producto, nunca supera 50.");
+		} catch (EstadoItemInvalidoException e) {
+		}
 	}
 }
