@@ -100,6 +100,11 @@ public class StandardItem implements IItem {
 		baseInventory.testAddItem(this);
 		this.testAddToInventory(baseInventory);
 		baseInventory.doAddItem(this);
+		this.doAddToInventory(baseInventory);
+	}
+
+	private void doAddToInventory(BaseInventory baseInventory) {
+		this.inventory=baseInventory;
 	}
 
 	private void testAddToInventory(BaseInventory baseInventory) throws InventoryYaAsignadoItemException{

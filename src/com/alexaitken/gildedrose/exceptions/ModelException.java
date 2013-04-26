@@ -1,5 +1,5 @@
 package com.alexaitken.gildedrose.exceptions;
 
-public class ModelException extends Exception {
+public class ModelException extends RuntimeException {
 
 }

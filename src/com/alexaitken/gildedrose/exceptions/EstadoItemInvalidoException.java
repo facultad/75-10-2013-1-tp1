@@ -1,5 +1,5 @@
 package com.alexaitken.gildedrose.exceptions;
 
-public class EstadoItemInvalidoException extends Exception{
+public class EstadoItemInvalidoException extends RuntimeException{
 
 }

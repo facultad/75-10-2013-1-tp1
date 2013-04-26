@@ -23,7 +23,6 @@ public class InventoryTest {
 			e.printStackTrace();
 			fail();
 		} catch (ModelException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			fail();
 		}
