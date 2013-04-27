@@ -22,7 +22,7 @@ public class ConjuredTest {
 	}
 
 	@Test
-	public void test() {
+	public void testUpdateQuality() {
 		/*
 		 * Los “Conjured” degradan su calidad 2 veces más rápido que los 
 		 * productos normales. (decrementa en 2).
